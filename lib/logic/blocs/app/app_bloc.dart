@@ -13,7 +13,6 @@ part 'app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   final UserRepository _userRepository;
   final AuthRepository _authRepository;
-  final PrefsRepository _prefsRepository;
   final CatalogBloc _catalogBloc;
   AppBloc(
     UserRepository userRepository,
@@ -22,28 +21,21 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     CatalogBloc catalogBloc,
   )   : _userRepository = userRepository,
         _authRepository = authRepository,
-        _prefsRepository = prefsRepository,
         _catalogBloc = catalogBloc,
         super(const AppState()) {
-    //on<AppUserChanged>(_onAppUserChanged);
-    on<AppPrefLocationSet>(_onAppPrefLocationSet);
-    _authRepository.getAuthStateChanges().listen((uid) {
-      //add(AppUserChanged(uid));
-      _onAppUserChanged(uid);
+    on<AppUserChanged>(_onAppUserChanged);
+    on<AppSignOutRequested>(_onAppSignOutRequested);
+    on<AppSelectedLocationSet>(_onAppSelectedLocationSet);
+    _authRepository.getAuthStateChanges().listen((String uid) {
+      add(AppUserChanged(uid));
     });
   }
 
-  //void _onAppUserChanged(AppUserChanged event, Emitter<AppState> emit) {
-  void _onAppUserChanged(String uid) {
-    uid.isEmpty
-        ? print("No user signed in")
-        : print("User with id: " + uid.toString() + " is signed in");
-    if (uid.isEmpty) {
+  void _onAppUserChanged(AppUserChanged event, Emitter<AppState> emit) async {
+    if (event.uid.isEmpty) {
       emit(const AppState(status: AppStatus.noUser));
     } else {
-      _userRepository.getUserData(uid).listen((user) async {
-        // Catalog data should be fetched after user
-        // authentication and firestore user data fetching
+      await for (var user in _userRepository.getUserData(event.uid)) {
         if (_catalogBloc.state.status == CatalogStatus.initial) {
           _catalogBloc.add(CatalogStarted());
         }
@@ -51,23 +43,29 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           // Go to '/location_search'
           emit(AppState(status: AppStatus.noLocation, user: user));
         } else {
-          // Retrieve last selected location
-          final prefLocation = await _prefsRepository.getPrefLocation();
-
-          // Go to '/catalog'
+          // Wait for catalog data to be fetched, then go to '/catalog'
+          // await for (var catalogState in _catalogBloc.stream) {
+          //   if (catalogState.status == CatalogStatus.loaded) {
           emit(AppState(
             status: AppStatus.hasLocation,
             user: user,
-            prefLocation: prefLocation,
+            selectedLocation: user.prefLocation,
           ));
+          //}
+          //}
         }
-      });
+      }
     }
   }
 
-  void _onAppPrefLocationSet(
-      AppPrefLocationSet event, Emitter<AppState> emit) async {
-    _prefsRepository.setPrefLocation(event.location);
-    emit(state.copyWith(prefLocation: event.location));
+  void _onAppSignOutRequested(
+      AppSignOutRequested event, Emitter<AppState> emit) {
+    _authRepository.signOut();
+  }
+
+  void _onAppSelectedLocationSet(
+      AppSelectedLocationSet event, Emitter<AppState> emit) async {
+    //_prefsRepository.setPrefLocation(event.location);
+    emit(state.copyWith(selectedLocation: event.selectedLocation));
   }
 }
