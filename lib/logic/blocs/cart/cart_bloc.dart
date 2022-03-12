@@ -38,24 +38,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   void _onCartItemUpdated(CartItemUpdated event, Emitter<CartState> emit) {
-    _cart.items.removeWhere((item) => item == event.placeholder);
-
+    _cart.items.removeWhere((item) => item == event.oldItem);
     for (int i = 0; i < event.quantity; i++) {
-      _cart.items.add(event.item);
+      _cart.items.add(event.newItem);
     }
-    Map<Item, int> itemMap = {};
-    for (var item in _cart.items) {
-      if (!itemMap.containsKey(item)) {
-        itemMap[item] = 1;
-      } else {
-        itemMap[item] = itemMap[item]! + 1;
-      }
-    }
-
-    for (var x in itemMap.entries) {
-      print(x.key.title + "\n" + x.value.toString() + "\n");
-      print("hi \n");
-    }
+    var itemMap = _cart.getItemMap();
 
     emit(CartState(
       status: CartStatus.loaded,

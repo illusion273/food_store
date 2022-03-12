@@ -90,7 +90,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       await prefs.setString("pref_location", jsonEncode(event.location));
       await _userRepository.postLocationData(event.location);
     } catch (e) {
-      print(e);
+      throw (e);
     }
   }
 

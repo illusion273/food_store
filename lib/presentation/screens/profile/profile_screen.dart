@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_store/logic/blocs/app/app_bloc.dart';
 import 'package:food_store/logic/blocs/auth/auth_bloc.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Profile')),
       body: Center(
         child: ElevatedButton(
-          onPressed: () => context.read<AuthBloc>().add(SignOutRequested()),
+          onPressed: () => context.read<AppBloc>().add(AppSignOutRequested()),
           child: const Text("Sign out"),
         ),
       ),

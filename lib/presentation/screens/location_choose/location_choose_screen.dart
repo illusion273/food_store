@@ -21,7 +21,7 @@ class LocationChooseScreen extends StatelessWidget {
                 leading: SizedBox(
                   height: double.infinity,
                   child: Icon(
-                    state.user.locations[index] == state.prefLocation
+                    state.user.locations[index] == state.selectedLocation
                         ? Icons.check_circle
                         : Icons.circle_outlined,
                     size: 28,
@@ -32,7 +32,7 @@ class LocationChooseScreen extends StatelessWidget {
                 onTap: () {
                   context
                       .read<AppBloc>()
-                      .add(AppPrefLocationSet(state.user.locations[index]));
+                      .add(AppSelectedLocationSet(state.user.locations[index]));
                   context.pop();
                 },
               );
@@ -48,7 +48,7 @@ class LocationChooseScreen extends StatelessWidget {
                 const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         icon: const Icon(Icons.add),
         label: const Text("Add new address"),
-        onPressed: () {},
+        onPressed: () => context.push('/location_search'),
       ),
       // Container(
       //   //padding: const EdgeInsets.symmetric(horizontal: 20),

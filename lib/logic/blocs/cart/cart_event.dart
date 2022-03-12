@@ -27,15 +27,15 @@ class CartItemAdded extends CartEvent {
 }
 
 class CartItemUpdated extends CartEvent {
-  final Item item;
-  final Item placeholder;
+  final Item oldItem;
+  final Item newItem;
   final int quantity;
   const CartItemUpdated({
-    required this.item,
-    required this.placeholder,
+    required this.oldItem,
+    required this.newItem,
     required this.quantity,
   });
 
   @override
-  List<Object> get props => [item, placeholder, quantity];
+  List<Object> get props => [oldItem, newItem, quantity];
 }

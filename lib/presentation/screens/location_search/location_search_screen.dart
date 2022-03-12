@@ -14,7 +14,7 @@ class LocationSearchScreen extends StatelessWidget {
       listener: (context, state) {
         if (state.status == LocationStatus.fullyLoaded ||
             state.status == LocationStatus.partiallyLoaded) {
-          context.go('/location_search/details', extra: state.location);
+          context.push('/location_search/details', extra: state.location);
         }
       },
       child: Scaffold(

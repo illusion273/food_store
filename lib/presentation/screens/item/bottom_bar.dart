@@ -62,12 +62,22 @@ class BottomBar extends StatelessWidget {
             fit: FlexFit.tight,
             child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                    child: const Text("Add to cart"),
-                    onPressed: () {
-                      context.read<ItemCubit>().addToCart();
-                      GoRouter.of(context).pop();
-                    })),
+                child: BlocBuilder<ItemCubit, ItemState>(
+                  builder: (context, state) {
+                    return ElevatedButton(
+                        child: Text((state.status == ItemStatus.adding)
+                            ? "Add to cart"
+                            : "Update"),
+                        onPressed: () {
+                          if (state.status == ItemStatus.adding) {
+                            context.read<ItemCubit>().addToCart();
+                          } else if (state.status == ItemStatus.editing) {
+                            context.read<ItemCubit>().updateToCart();
+                          }
+                          GoRouter.of(context).pop();
+                        });
+                  },
+                )),
           ),
         ],
       ),

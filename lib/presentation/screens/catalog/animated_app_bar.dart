@@ -82,7 +82,8 @@ class _AnimatedAppBarState extends State<AnimatedAppBar>
                   builder: (context, state) {
                     return GestureDetector(
                       onTap: () => context.push('/location_choose'),
-                      child: Text(state.prefLocation?.address ?? "",
+                      child: Text(
+                          state.selectedLocation?.address ?? 'Select Location',
                           style: Theme.of(context).textTheme.titleMedium),
                     );
                   },

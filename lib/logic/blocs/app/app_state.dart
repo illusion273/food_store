@@ -5,26 +5,24 @@ enum AppStatus { initial, hasLocation, noLocation, noUser, error }
 class AppState extends Equatable {
   final AppStatus status;
   final User user;
-  final Location? prefLocation;
+  final Location? selectedLocation;
   const AppState({
     this.status = AppStatus.initial,
     this.user = const User(),
-    this.prefLocation,
+    this.selectedLocation = const Location(),
   });
 
   @override
-  List<Object?> get props => [status, user, prefLocation];
+  List<Object?> get props => [status, user, selectedLocation];
 
   AppState copyWith({
     AppStatus? status,
-    AppStatus? prevStatus,
     User? user,
-    Location? prefLocation,
+    Location? selectedLocation,
   }) {
     return AppState(
-      status: status ?? this.status,
-      user: user ?? this.user,
-      prefLocation: prefLocation ?? this.prefLocation,
-    );
+        status: status ?? this.status,
+        user: user ?? this.user,
+        selectedLocation: selectedLocation ?? this.selectedLocation);
   }
 }

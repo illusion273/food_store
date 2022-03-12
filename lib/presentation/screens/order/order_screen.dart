@@ -28,9 +28,9 @@ class OrderScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CartTile(
-                              item: state.itemMap.keys.elementAt(i),
-                              quantity: state.itemMap.values.elementAt(i)),
-                          const SizedBox(height: 20),
+                            item: state.itemMap.keys.elementAt(i),
+                            quantity: state.itemMap.values.elementAt(i),
+                          ),
                         ],
                       ),
                     );
@@ -66,12 +66,12 @@ class OrderScreen extends StatelessWidget {
         bottomNavigationBar: Container(
           height: 60,
           color: Colors.white,
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: ElevatedButton(
               onPressed: () {
                 context.read<OrderCubit>().postOrderData();
               },
-              child: Text("Checkout")),
+              child: const Text("Checkout")),
         ));
   }
 }

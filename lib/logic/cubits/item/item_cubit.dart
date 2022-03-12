@@ -22,6 +22,18 @@ class ItemCubit extends Cubit<ItemState> {
     emit(ItemState(subTotal: _subTotal, ingredients: _ingredients));
   }
 
+  void passItemForEdit(Item item, int quantity) {
+    _item = item;
+    _subTotal = _item.subTotal;
+    _ingredients = List.from(_item.ingredients);
+
+    emit(ItemState(
+        status: ItemStatus.editing,
+        subTotal: _subTotal,
+        ingredients: _ingredients,
+        quantity: quantity));
+  }
+
   void changeValue(int index) {
     List<Ingredient> ingredients = List.from(state.ingredients);
     bool value = !ingredients[index].selected;
@@ -50,6 +62,13 @@ class ItemCubit extends Cubit<ItemState> {
     _cartBloc.add(CartItemAdded(
         item: _item.copyWith(ingredients: state.ingredients),
         quantity: state.quantity));
-    //add to cart x quantity
+  }
+
+  void updateToCart() {
+    _item.copyWith(ingredients: state.ingredients);
+    _cartBloc.add(CartItemUpdated(
+        oldItem: _item,
+        newItem: _item.copyWith(ingredients: state.ingredients),
+        quantity: state.quantity));
   }
 }

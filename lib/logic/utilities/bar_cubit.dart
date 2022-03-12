@@ -8,9 +8,9 @@ class AnimBarCubit extends Cubit<bool> {
   }
 }
 
-/// Handes slide transition of SearchBox in CatalogScreen
-class AnimBoxCubit extends Cubit<bool> {
-  AnimBoxCubit() : super(false);
+/// Handes slide transition of CartTile in OrderScreen
+class AnimCartTileCubit extends Cubit<bool> {
+  AnimCartTileCubit() : super(false);
 
   void animate() {
     emit(!state);

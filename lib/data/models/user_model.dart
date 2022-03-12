@@ -9,11 +9,13 @@ part 'user_model.g.dart';
 class User {
   final String email;
   final String uid;
+  final Location prefLocation;
   final List<Location> locations;
   final List<Order> orders;
   const User({
     this.email = "",
     this.uid = "",
+    this.prefLocation = const Location(),
     this.locations = const [],
     this.orders = const [],
   });

@@ -16,20 +16,24 @@ class AuthRepository {
       (firebaseUser) async {
         if (firebaseUser != null) {
           print('Authentication Repository:\n');
-          print('User ${firebaseUser.uid} signed in!\n');
+          print('User ${firebaseUser.uid} signed in' '\n');
+
           // TEMPORARY
           // Creates user entry to firestore after signup
           // ASAP Convert this code to cloud function
           final FirebaseFirestore _db = FirebaseFirestore.instance;
           var snapshot =
-              await _db.collection("users").doc(firebaseUser.uid).get();
+              await _db.collection('users').doc(firebaseUser.uid).get();
           if (!snapshot.exists) {
-            await _db.collection("users").add({
-              'uid': firebaseUser.uid,
-              'email': firebaseUser.email,
-            });
+            try {
+              await _db.collection('users').doc(firebaseUser.uid).set({
+                'uid': firebaseUser.uid,
+                'email': firebaseUser.email,
+              });
+            } catch (e) {
+              throw Exception(e);
+            }
           } // END
-
           return firebaseUser.uid;
         } else {
           print('Authentication Repository:\n');
@@ -86,7 +90,7 @@ class AuthRepository {
       );
       await _firebaseAuth.signInWithCredential(credential);
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception(e);
     }
   }
 
@@ -101,33 +105,3 @@ class AuthRepository {
     }
   }
 }
-
-// Stream<Auth> getAuthStateChanges() {
-//   return _firebaseAuth.authStateChanges().map(
-//     (firebaseUser) {
-//       if (firebaseUser != null) {
-//         print('Authentication Repository: User is signed in!');
-
-//         // TEMPORARY
-//         // ASAP Convert to cloud function
-//         // Creates user entry to firestore after signup
-//         final FirebaseFirestore _db = FirebaseFirestore.instance;
-//         var ref = _db.collection("users").doc(firebaseUser.uid);
-//         ref.set({
-//           'uid': firebaseUser.uid,
-//           'email': firebaseUser.email,
-//         }, SetOptions(merge: true)); // END
-
-//         return Auth(
-//           uid: firebaseUser.uid,
-//           email: firebaseUser.email,
-//           displayName: firebaseUser.displayName,
-//           photoURL: firebaseUser.photoURL,
-//         );
-//       } else {
-//         print('Authentication Repository: User is signed out!');
-//         return const Auth(uid: "");
-//       }
-//     },
-//   );
-// }

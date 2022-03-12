@@ -57,12 +57,10 @@ class Item extends Equatable {
     String single = "";
     for (var ingredient in ingredients) {
       if (ingredient.selected == true) {
-        single += (ingredient.name);
-        if (ingredient != ingredients.last) {
-          single += "\n";
-        }
+        single += (ingredient.name + "\n");
       }
     }
+    single = single.substring(0, single.length - 1);
     return single;
   }
 

@@ -14,9 +14,11 @@ class AppUserChanged extends AppEvent {
   List<Object> get props => [uid];
 }
 
-class AppPrefLocationSet extends AppEvent {
-  final Location location;
-  const AppPrefLocationSet(this.location);
+class AppSignOutRequested extends AppEvent {}
+
+class AppSelectedLocationSet extends AppEvent {
+  final Location selectedLocation;
+  const AppSelectedLocationSet(this.selectedLocation);
   @override
-  List<Object> get props => [location];
+  List<Object> get props => [selectedLocation];
 }

@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
         GoRoute(
           path: '/profile',
           builder: (context, state) => BlocProvider.value(
-            value: _injector.authBloc,
+            value: _injector.appBloc,
             child: const ProfileScreen(),
           ),
         ),
@@ -120,6 +120,19 @@ class MyApp extends StatelessWidget {
             ],
             child: const OrderScreen(),
           ),
+          routes: [
+            GoRoute(
+              path: ':id',
+              builder: (context, state) {
+                var map = (state.extra! as Map<Item, int>);
+                return BlocProvider.value(
+                  value: _injector.itemCubit
+                    ..passItemForEdit(map.keys.first, map.values.first),
+                  child: ItemScreen(item: map.keys.first.copyWith()),
+                );
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: '/catalog',
@@ -130,7 +143,7 @@ class MyApp extends StatelessWidget {
               BlocProvider.value(value: _injector.appBloc),
               BlocProvider.value(value: _injector.cartBloc),
               BlocProvider(create: ((context) => AnimBarCubit())),
-              BlocProvider(create: ((context) => AnimBoxCubit())),
+              BlocProvider(create: ((context) => AnimCartTileCubit())),
             ],
             child: const CatalogScreen(),
           ),

@@ -71,7 +71,7 @@ class _CatalogScreenState extends State<CatalogScreen>
   void scrollSync(int length) {
     keys.clear();
     offsets.clear();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       for (var key in keys) {
         var renderSliver =
             key.currentContext!.findRenderObject() as RenderSliver;
@@ -122,7 +122,7 @@ class _CatalogScreenState extends State<CatalogScreen>
                                         onTap: () =>
                                             context.push('/location_choose'),
                                         child: Text(
-                                          state.prefLocation?.address ?? "",
+                                          state.selectedLocation?.address ?? "",
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleLarge,

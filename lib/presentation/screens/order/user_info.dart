@@ -24,8 +24,8 @@ class UserInfo extends StatelessWidget {
                 builder: (context, state) {
                   return UserDataTile(
                     title: "Location",
-                    subtitle: state.prefLocation?.address ?? "",
-                    subtitlePlus: state.prefLocation?.details ?? "",
+                    subtitle: state.selectedLocation?.address ?? "",
+                    subtitlePlus: state.selectedLocation?.details ?? "",
                     icon: Icons.gps_fixed,
                     onTap: () => context.push('/location_choose'),
                   );
