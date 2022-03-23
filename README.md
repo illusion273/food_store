@@ -5,7 +5,7 @@ This project is about ordering food online. It is being developed for the sole p
 - Flutter framework
 - Dart programming language
 - Bloc design pattern
-- Firebase Authenticaton
+- Firebase Authentication
 - Google Cloud Firestore for Firebase
 - Google Maps Platform
 
